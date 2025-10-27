@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selenium Coding Questions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .challenge-section {
+            margin-bottom: 50px;
+            border-left: 5px solid #667eea;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .challenge-title {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .challenge-num {
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .question {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 3px solid #764ba2;
+        }
+        
+        .demo-area {
+            background: #fafafa;
+            padding: 30px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border: 2px dashed #ddd;
+            min-height: 120px;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 3px solid #2196F3;
+            font-size: 0.95em;
+        }
+        
+        .button-container {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .solution-toggle {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        .solution-toggle:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .solution-toggle:active {
+            transform: translateY(0);
+        }
+        
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            animation: fadeIn 0.3s;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.4s;
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .modal-header h2 {
+            font-size: 1.6em;
+            margin: 0;
+        }
+        
+        .modal-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+        
+        .modal-close:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .solution-approach {
+            margin-bottom: 25px;
+        }
+        
+        .solution-approach h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .code-section {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .key-points {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        
+        .key-points ul {
+            margin-left: 20px;
+        }
+        
+        .key-points li {
+            margin: 8px 0;
+            line-height: 1.5;
+            color: #333;
+        }
+        
+        input[type="file"] {
+            margin: 10px 0;
+        }
+
+        .upload-info {
+            background: #e8f5e9;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 3px;
+            border-left: 3px solid #4CAF50;
+        }
+
+        .download-info {
+            background: #e3f2fd;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 3px;
+            border-left: 3px solid #2196F3;
+        }
+
+        /* Dropdown Pattern Library Styles */
+        .custom-dropdown-container {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+            display: inline-block;
+        }
+
+        .custom-dropdown {
+            border: 2px solid #667eea;
+            padding: 12px 15px;
+            border-radius: 5px;
+            background: white;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            font-weight: 500;
+            color: #333;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .custom-dropdown:hover {
+            border-color: #764ba2;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            border: 2px solid #667eea;
+            border-top: none;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            border-radius: 0 0 5px 5px;
+            margin-top: -2px;
+            min-width: 100%;
+        }
+
+        .dropdown-option {
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid #f0f0f0;
+            white-space: nowrap;
+        }
+
+        .dropdown-option:hover {
+            background: #f5f5f5;
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        .dropdown-option:last-child {
+            border-bottom: none;
+        }
+
+        .password-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            animation: fadeIn 0.3s;
+        }
+
+        .password-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .password-box {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            text-align: center;
+            max-width: 400px;
+            animation: slideUp 0.4s;
+        }
+
+        .password-box h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .password-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .password-box input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .password-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .password-buttons button {
+            padding: 10px 30px;
+        }
+
+        .password-buttons .cancel-btn {
+            background: #999;
+        }
+
+        .password-buttons .cancel-btn:hover {
+            background: #777;
+        }
+
+        .error-msg {
+            color: #c62828;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        footer {
+            background: #f5f5f5;
+            padding: 25px;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #764ba2;
+        }
+
+        .input-field {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-family: monospace;
+            margin-top: 10px;
+        }
+        
+        /* Spinner and Loading Styles */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        .spinner.hidden {
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .ajax-content {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+            color: #333;
+            text-align: center;
+            margin: 20px 0;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .ajax-content.loaded {
+            opacity: 1;
+        }
+
+        /* Infinite Scroll Styles */
+        .scroll-container {
+            height: 300px;
+            overflow-y: scroll;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            background: white;
+        }
+
+        .scroll-item {
+            padding: 15px;
+            margin: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .scroll-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .modal-content {
+                max-width: 95%;
+                max-height: 95vh;
+            }
+            
+            .modal-header {
+                padding: 20px;
+            }
+            
+            .modal-body {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div style="background: #2c3e50; color: white; padding: 20px; text-align: center; border-bottom: 4px solid #e74c3c;">
+            <h2 style="margin: 0 0 15px 0; font-size: 1.5em;">⚠️ CONFIDENTIAL - NEOGOV</h2>
+            <p style="margin: 10px 0; font-size: 1.1em; font-weight: bold;">© 2025 Neogov, Inc. All Rights Reserved</p>
+            <p style="margin: 10px 0; color: #ecf0f1; line-height: 1.6;">
+                <strong>TERMS & CONDITIONS:</strong> This document is confidential and proprietary. 
+                Unauthorized copying, sharing, reuse, or distribution of this material is strictly prohibited. 
+                For authorized use only.
+            </p>
+        </div>
+
+        <div class="header">
+            <h1>🚀 Selenium Coding Questions</h1>
+            <p>Interactive Demo & Questions | Framework-Agnostic</p>
+        </div>
+        
+        <div class="content">
+            
+            <!-- GLOBAL TEST TIMER -->
+            <div style="background: #fff3cd; padding: 20px; border-radius: 5px; margin-bottom: 30px; border: 2px solid #ff9800; text-align: center;">
+                <h2 style="color: #333; margin-bottom: 15px;">⏱️ SELENIUM AUTOMATION TEST - 40 MINUTES</h2>
+                <div style="font-size: 2.5em; font-weight: bold; color: #333; margin: 15px 0;">
+                    Time Remaining: <span id="timerDisplay" style="color: #ff9800;">40:00</span>
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <button onclick="startTimer()" style="background: #4CAF50; padding: 15px 30px; font-size: 1.1em; font-weight: bold;">▶️ Start Test</button>
+                    <button onclick="resetTimer()" style="background: #999; padding: 15px 30px; font-size: 1.1em; font-weight: bold;">🔄 Reset Timer</button>
+                    <button onclick="saveAllAnswers()" style="background: #2196F3; padding: 15px 30px; font-size: 1.1em; font-weight: bold;">💾 Save All Answers</button>
+                </div>
+                <p style="margin-top: 15px; color: #666; font-size: 0.95em;">Answer all questions below. Timer starts when you click "Start Test".</p>
+            </div>
+            
+            <!-- Challenge 1 -->
+            <div class="challenge-section">
+                <div class="challenge-title">
+                    <span class="challenge-num">1</span>
+                    <span>Dropdown Pattern Library - Select Option</span>
+                </div>
+                
+                <div class="question">
+                    <strong>❓ Question:</strong> A custom dropdown (pattern library component) shows a list of frameworks. Write code to:
+                    <ol style="margin-left: 20px; margin-top: 10px;">
+                        <li>Click the dropdown to open it</li>
+                        <li>Locate the "Playwright" option</li>
+                        <li>Click "Playwright" to select it</li>
+                        <li>Verify the selection shows "Playwright"</li>
+                    </ol>
+                </div>
+                
+                <div class="demo-area">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Select Framework:</label>
+                        <div class="custom-dropdown-container">
+                            <div class="custom-dropdown" onclick="toggleDropdown(event)">
+                                <span id="selectedValue">Choose Framework...</span>
+                                <span style="float: right; color: #666;">▼</span>
+                            </div>
+                            <div class="dropdown-menu" id="dropdownMenu" style="display: none;">
+                                <div class="dropdown-option" onclick="selectOption('Selenium', event)">Selenium</div>
+                                <div class="dropdown-option" onclick="selectOption('Cypress', event)">Cypress</div>
+                                <div class="dropdown-option" onclick="selectOption('Playwright', event)">Playwright</div>
+                                <div class="dropdown-option" onclick="selectOption('Puppeteer', event)">Puppeteer</div>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="margin: 10px 0; color: #666;">Selected: <strong id="displaySelected">None</strong></p>
+                </div>
+                
+                <div class="info-box">
+                    <strong>🔍 What's happening:</strong> Click dropdown → menu appears → click option → menu closes.
+                </div>
+                
+                <div class="button-container">
+                    <button class="solution-toggle" onclick="showSolution(1, 'Dropdown Pattern Library')">Show Solution</button>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 5px; margin: 15px 0; border: 2px solid #ddd;">
+                    <strong>📝 Write your answer below:</strong>
+                    <textarea id="answer1" placeholder="Write code to interact with dropdown..." style="width: 100%; height: 200px;"></textarea>
+                </div>
+            </div>
+
+            <!-- Challenge 2 - Different Locators -->
+            <div class="challenge-section">
+                <div class="challenge-title">
+                    <span class="challenge-num">2</span>
+                    <span>Element Locators - Multiple Strategies</span>
+                </div>
+
+                <div class="question" style="background: #e8f5e9; border-left-color: #4CAF50;">
+                    <strong>📋 Instructions:</strong> Answer the 3 questions below (2.a, 2.b, 2.c). Write test code to locate and interact with the elements shown. Use the answer boxes to write your solutions.
+                </div>
+
+                <!-- Question 2.a -->
+                <div style="background: #f0f7ff; padding: 20px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #2196F3;">
+                    <h3 style="color: #1976d2; margin-bottom: 15px;">2.a - Locate by ID and CSS Class</h3>
+                    
+                    <div class="question">
+                        <strong>❓ Question 2.a:</strong> Locate the email input field using ID and fill it with "test@example.com". Then locate using CSS class and verify. Write code for both methods.
+                    </div>
+
+                    <div class="demo-area">
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: bold;">📧 Email Input (ID: userEmail)</label>
+                            <input type="email" id="userEmail" class="form-input email-field" placeholder="Enter your email" style="padding: 10px; border: 2px solid #ddd; border-radius: 5px; width: 100%; max-width: 300px;">
+                        </div>
+                        <p style="margin: 10px 0; color: #666;">Current Value: <strong id="email2aValue">Empty</strong></p>
+                        <button onclick="updateDisplay('userEmail', 'email2aValue')" style="background: #2196F3;">Check Value</button>
+                    </div>
+
+                    <div style="background: white; padding: 15px; border-radius: 5px; margin: 15px 0; border: 2px solid #ddd;">
+                        <strong>📝 Write your answer:</strong>
+                        <textarea id="answer2a" placeholder="Locate by ID and CSS class..." style="width: 100%; height: 200px;"></textarea>
+                    </div>
+                </div>
+
+                <!-- Question 2.b -->
+                <div style="background: #f5f5f5; padding: 20px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #ff9800;">
+                    <h3 style="color: #e65100; margin-bottom: 15px;">2.b - Locate by Name and XPath</h3>
+                    
+                    <div class="question">
+                        <strong>❓ Question 2.b:</strong> Locate the username using NAME attribute. Then locate using XPath with conditions (name AND type). Write both approaches.
+                    </div>
+
+                    <div class="demo-area">
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: bold;">👤 Username Input (Name: username)</label>
+                            <input type="text" name="username" class="form-input username-field" placeholder="Enter username" style="padding: 10px; border: 2px solid #ddd; border-radius: 5px; width: 100%; max-width: 300px;">
+                        </div>
+                        <p style="margin: 10px 0; color: #666;">Current Value: <strong id="username2bValue">Empty</strong></p>
+                        <button onclick="updateDisplayByName('username', 'username2bValue')" style="background: #ff9800;">Check Value</button>
+                    </div>
+
+                    <div style="background: white; padding: 15px; border-radius: 5px; margin: 15px 0; border: 2px solid #ddd;">
+                        <strong>📝 Write your answer:</strong>
+                        <textarea id="answer2b" placeholder="Locate by Name and XPath..." style="width: 100%; height: 200px;"></textarea>
+                    </div>
+                </div>
+
+                <!-- Question 2.c -->
+                <div style="background: #fce4ec; padding: 20px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #c2185b;">
+                    <h3 style="color: #c2185b; margin-bottom: 15px;">2.c - Locate by Link Text and Partial Link Text</h3>
+                    
+                    <div class="question">
+                        <strong>❓ Question 2.c:</strong> Locate links using LINK_TEXT for exact match and PARTIAL_LINK_TEXT for partial match. Also demonstrate with XPath text content.
+                    </div>
+
+                    <div class="demo-area">
+                        <div style="margin-bottom: 15px;">
+                            <p style="margin-bottom: 10px; font-weight: bold;">🔗 Links to locate:</p>
+                            <a href="javascript:showLinkMessage('forgot')" style="display: inline-block; padding: 10px 20px; background: #2196F3; color: white; text-decoration: none; border-radius: 5px; margin: 5px 5px 5px 0; cursor: pointer;">Forgot Password Link</a>
+                            <a href="javascript:showLinkMessage('register')" style="display: inline-block; padding: 10px 20px; background: #4CAF50; color: white; text-decoration: none; border-radius: 5px; margin: 5px 5px 5px 0; cursor: pointer;">Create New Account</a>
+                            <a href="javascript:showLinkMessage('help')" style="display: inline-block; padding: 10px 20px; background: #ff9800; color: white; text-decoration: none; border-radius: 5px; margin: 5px 5px 5px 0; cursor: pointer;">Get Help Center</a>
+                        </div>
+                        <div id="linkMessage" style="margin-top: 15px; display: none; padding: 10px; background: #e8f5e9; border-radius: 5px; border-left: 4px solid #4CAF50;"></div>
+                    </div>
+
+                    <div style="background: white; padding: 15px; border-radius: 5px; margin: 15px 0; border: 2px solid #ddd;">
+                        <strong>📝 Write your answer:</strong>
+                        <textarea id="answer2c" placeholder="Locate links using different strategies..." style="width: 100%; height: 200px;"></textarea>
+                    </div>
+                </div>
+
+                <div class="button-container">
+                    <button class="solution-toggle" onclick="showSolution(2, 'Element Locators')">Show Solution</button>
+                </div>
+            </div>
+
+            <!-- Challenge 3 -->
+            <div class="challenge-section">
+                <div class="challenge-title">
+                    <span class="challenge-num">3</span>
+                    <span>Loading Spinners - Wait for Content</span>
+                </div>
+                
+                <div class="question">
+                    <strong>❓ Question:</strong> After clicking a button, a loading spinner appears, then disappears when content loads. How do you wait for both spinner disappearance AND content appearance?
+                </div>
+                
+                <div class="demo-area">
+                    <button onclick="simulateLoad(this)">Load Content</button>
+                    <div class="spinner" id="spinner1"></div>
+                    <div class="ajax-content" id="content1">
+                        ✅ Content Loaded Successfully!
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <strong>🔍 What's happening:</strong> Click button → spinner appears → content appears after 2 seconds.
+                </div>
+                
+                <div class="button-container">
+                    <button class="solution-toggle" onclick="showSolution(3, 'Loading Spinners')">Show Solution</button>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 5px; margin: 15px 0; border: 2px solid #ddd;">
+                    <strong>📝 Write your answer below:</strong>
+                    <textarea id="answer3" placeholder="Write code to wait for spinner and content..." style="width: 100%; height: 200px;"></textarea>
+                </div>
+            </div>
+
+            <!-- Challenge 4 -->
+            <div class="challenge-section">
+                <div class="challenge-title">
+                    <span class="challenge-num">4</span>
+                    <span>Infinite Scroll - Load More Items</span>
+                </div>
+                
+                <div class="question">
+                    <strong>❓ Question:</strong> Page uses infinite scroll. Items load as you scroll. How do you test multiple batches without manual scrolling?
+                </div>
+                
+                <div class="demo-area">
+                    <div class="scroll-container" id="scrollContainer" onscroll="handleScroll(event)">
+                        <div class="scroll-item">Item 1</div>
+                        <div class="scroll-item">Item 2</div>
+                        <div class="scroll-item">Item 3</div>
+                        <div class="scroll-item">Item 4</div>
+                        <div class="scroll-item">Item 5</div>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <strong>🔍 What's happening:</strong> Scroll in container to load more items.
+                </div>
+                
+                <div class="button-container">
+                    <button class="solution-toggle" onclick="showSolution(4, 'Infinite Scroll')">Show Solution</button>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 5px; margin: 15px 0; border: 2px solid #ddd;">
+                    <strong>📝 Write your answer below:</strong>
+                    <textarea id="answer4" placeholder="Write code to handle infinite scroll..." style="width: 100%; height: 200px;"></textarea>
+                </div>
+            </div>
+
+            <!-- Challenge 5 -->
+            <div class="challenge-section">
+                <div class="challenge-title">
+                    <span class="challenge-num">5</span>
+                    <span>Dynamic Element IDs</span>
+                </div>
+                
+                <div class="question">
+                    <strong>❓ Question:</strong> Element ID changes on reload ('item-12345-abc'). Can't use fixed ID. How to locate reliably?
+                </div>
+                
+                <div class="demo-area">
+                    <button onclick="regenerateDynamicId()">Regenerate ID</button>
+                    <div class="dynamic-element" id="item-12345-xyz">
+                        My ID: <strong id="idDisplay">item-12345-xyz</strong>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <strong>🔍 What's happening:</strong> Click button to simulate page reload with new ID.
+                </div>
+                
+                <div class="button-container">
+                    <button class="solution-toggle" onclick="showSolution(5, 'Dynamic Element IDs')">Show Solution</button>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 5px; margin: 15px 0; border: 2px solid #ddd;">
+                    <strong>📝 Write your answer below:</strong>
+                    <textarea id="answer5" placeholder="Write code to locate elements with dynamic IDs..." style="width: 100%; height: 200px;"></textarea>
+                </div>
+            </div>
+
+            <!-- Challenge 6 -->
+            <div class="challenge-section">
+                <div class="challenge-title">
+                    <span class="challenge-num">6</span>
+                    <span>Custom Wait for Element Count</span>
+                </div>
+                
+                <div class="question">
+                    <strong>❓ Question:</strong> List loads 5 items at a time. Wait until exactly 15 items appear. How to create custom wait condition?
+                </div>
+                
+                <div class="demo-area">
+                    <button onclick="loadMoreItems(event)">Load Next 5 Items</button>
+                    <div class="item-list" id="itemList">
+                        <div class="list-item">Item 1</div>
+                        <div class="list-item">Item 2</div>
+                        <div class="list-item">Item 3</div>
+                        <div class="list-item">Item 4</div>
+                        <div class="list-item">Item 5</div>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <strong>🔍 What's happening:</strong> Click button to load 5 items per batch (max 15).
+                </div>
+                
+                <div class="button-container">
+                    <button class="solution-toggle" onclick="showSolution(6, 'Element Count')">Show Solution</button>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 5px; margin: 15px 0; border: 2px solid #ddd;">
+                    <strong>📝 Write your answer below:</strong>
+                    <textarea id="answer6" placeholder="Write code for custom element count condition..." style="width: 100%; height: 200px;"></textarea>
+                </div>
+            </div>
+
+            <!-- Challenge 7 -->
+            <div class="challenge-section">
+                <div class="challenge-title">
+                    <span class="challenge-num">7</span>
+                    <span>Custom Wait for Attribute Change</span>
+                </div>
+                
+                <div class="question">
+                    <strong>❓ Question:</strong> Button 'disabled' attribute changes when form is valid. How to wait for attribute change?
+                </div>
+                
+                <div class="demo-area">
+                    <input class="input-field" type="text" placeholder="Type something..." id="formInput" oninput="validateForm()">
+                    <button class="submit-button" id="submitBtn" disabled>Submit (Disabled)</button>
+                </div>
+                
+                <div class="info-box">
+                    <strong>🔍 What's happening:</strong> Type in input. When not empty, button becomes enabled.
+                </div>
+                
+                <div class="button-container">
+                    <button class="solution-toggle" onclick="showSolution(7, 'Attribute Change')">Show Solution</button>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 5px; margin: 15px 0; border: 2px solid #ddd;">
+                    <strong>📝 Write your answer below:</strong>
+                    <textarea id="answer7" placeholder="Write code to wait for attribute change..." style="width: 100%; height: 200px;"></textarea>
+                </div>
+            </div>
+
+            <!-- Challenge 8 -->
+            <div class="challenge-section">
+                <div class="challenge-title">
+                    <span class="challenge-num">8</span>
+                    <span>Stale Element Reference Exception</span>
+                </div>
+                
+                <div class="question">
+                    <strong>❓ Question:</strong> Element located, then DOM re-renders. Interaction throws StaleElementReferenceException. How to handle?
+                </div>
+                
+                <div class="demo-area">
+                    <button onclick="regenerateDOMElements()">Regenerate DOM</button>
+                    <div id="staleContainer" style="margin-top: 15px;">
+                        <div class="stale-element" id="elem1">Element 1</div>
+                        <div class="stale-element" id="elem2">Element 2</div>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <strong>🔍 What's happening:</strong> Elements continuously re-render (animated).
+                </div>
+                
+                <div class="button-container">
+                    <button class="solution-toggle" onclick="showSolution(8, 'Stale Element')">Show Solution</button>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 5px; margin: 15px 0; border: 2px solid #ddd;">
+                    <strong>📝 Write your answer below:</strong>
+                    <textarea id="answer8" placeholder="Write code to handle stale elements..." style="width: 100%; height: 200px;"></textarea>
+                </div>
+            </div>
+
+            <!-- Challenge 9 -->
+            <div class="challenge-section">
+                <div class="challenge-title">
+                    <span class="challenge-num">9</span>
+                    <span>CSS Value Change Wait</span>
+                </div>
+                
+                <div class="question">
+                    <strong>❓ Question:</strong> Element background color changes. Need to wait for specific color. How to create wait condition for CSS value?
+                </div>
+                
+                <div class="demo-area">
+                    <button onclick="changeColor(event)">Change Color</button>
+                    <div id="colorBox" style="width: 100px; height: 100px; background: rgb(100, 200, 100); border-radius: 5px; margin-top: 10px; transition: background 0.5s;"></div>
+                    <div style="margin-top: 10px; color: #666;" id="colorStatus">Current: Green</div>
+                </div>
+                
+                <div class="info-box">
+                    <strong>🔍 What's happening:</strong> Click button to change the box's background color.
+                </div>
+                
+                <div class="button-container">
+                    <button class="solution-toggle" onclick="showSolution(9, 'CSS Value Change')">Show Solution</button>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 5px; margin: 15px 0; border: 2px solid #ddd;">
+                    <strong>📝 Write your answer below:</strong>
+                    <textarea id="answer9" placeholder="Write code to wait for CSS value change..." style="width: 100%; height: 200px;"></textarea>
+                </div>
+            </div>
+
+            <!-- Challenge 10 -->
+            <div class="challenge-section">
+                <div class="challenge-title">
+                    <span class="challenge-num">10</span>
+                    <span>File Upload Handling</span>
+                </div>
+                
+                <div class="question">
+                    <strong>❓ Question:</strong> How do you handle file uploads? Select file, verify selection, and submit. What are best practices?
+                </div>
+                
+                <div class="demo-area">
+                    <input type="file" id="fileUpload" accept=".pdf,.doc,.docx,.txt">
+                    <button onclick="handleFileUpload()">Upload File</button>
+                    <div id="uploadResult" style="margin-top: 15px;"></div>
+                </div>
+                
+                <div class="button-container">
+                    <button class="solution-toggle" onclick="showSolution(10, 'File Upload')">Show Solution</button>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 5px; margin: 15px 0; border: 2px solid #ddd;">
+                    <strong>📝 Write your answer below:</strong>
+                    <textarea id="answer10" placeholder="Write code for file upload handling..." style="width: 100%; height: 200px;"></textarea>
+                </div>
+            </div>
+
+            <!-- Challenge 11 -->
+            <div class="challenge-section">
+                <div class="challenge-title">
+                    <span class="challenge-num">11</span>
+                    <span>File Download Verification</span>
+                </div>
+                
+                <div class="question">
+                    <strong>❓ Question:</strong> After clicking download, file saves to downloads folder. How to verify download completion, file name, and content?
+                </div>
+                
+                <div class="demo-area">
+                    <button onclick="initiateDownload()">Download Report</button>
+                    <button onclick="initiateCSVDownload()" style="margin-left: 10px;">Download CSV</button>
+                    <div id="downloadResult" style="margin-top: 15px;"></div>
+                </div>
+                
+                <div class="button-container">
+                    <button class="solution-toggle" onclick="showSolution(11, 'File Download')">Show Solution</button>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 5px; margin: 15px 0; border: 2px solid #ddd;">
+                    <strong>📝 Write your answer below:</strong>
+                    <textarea id="answer11" placeholder="Write code for file download verification..." style="width: 100%; height: 200px;"></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>💡 <strong>Tip:</strong> Right-click on any element and select "Inspect" to see the HTML/CSS.</p>
+            <p>📧 This file is self-contained. Share it directly.</p>
+        </footer>
+    </div>
+
+    <!-- Password Modal -->
+    <div class="password-modal" id="passwordModal">
+        <div class="password-box">
+            <h2>🔐 Enter Password</h2>
+            <p>Solutions are protected. Enter the password to continue.</p>
+            <input type="password" id="passwordInput" placeholder="Enter password" onkeypress="if(event.key === 'Enter') submitPassword()">
+            <div id="errorMsg" class="error-msg"></div>
+            <div class="password-buttons">
+                <button onclick="submitPassword()">Unlock</button>
+                <button class="cancel-btn" onclick="closePasswordModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Solutions -->
+    <div class="modal-overlay" id="solutionModal" onclick="closeSolutionIfBackground(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 id="solutionTitle">Solution</h2>
+                <button class="modal-close" onclick="closeSolution()">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="solutionContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let timerInterval = null;
+        let timeRemaining = 40 * 60;
+        let currentChallengeNum = null;
+
+        function startTimer() {
+            if (timerInterval) return;
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    alert('⏰ Time is up! Your 40 minutes are over.');
+                }
+            }, 1000);
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            timeRemaining = 40 * 60;
+            updateTimerDisplay();
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timerDisplay').textContent = display;
+            const timerElement = document.getElementById('timerDisplay').parentElement;
+            if (timeRemaining <= 300) {
+                timerElement.style.color = '#c62828';
+            } else if (timeRemaining <= 600) {
+                timerElement.style.color = '#ff6f00';
+            }
+        }
+
+        function updateDisplay(fieldId, displayId) {
+            const field = document.getElementById(fieldId);
+            const display = document.getElementById(displayId);
+            display.textContent = field.value || 'Empty';
+        }
+
+        function updateDisplayByName(fieldName, displayId) {
+            const field = document.querySelector(`[name="${fieldName}"]`);
+            const display = document.getElementById(displayId);
+            if (field) display.textContent = field.value || 'Empty';
+        }
+
+        function showLinkMessage(linkType) {
+            const messageDiv = document.getElementById('linkMessage');
+            const messages = {
+                'forgot': '✅ Forgot Password link clicked!',
+                'register': '✅ Create New Account link clicked!',
+                'help': '✅ Get Help Center link clicked!'
+            };
+            messageDiv.textContent = messages[linkType] || 'Link clicked';
+            messageDiv.style.display = 'block';
+            setTimeout(() => { messageDiv.style.display = 'none'; }, 3000);
+        }
+
+        function saveAllAnswers() {
+            const answers = {};
+            let hasAnswers = false;
+            for (let i = 1; i <= 11; i++) {
+                const textarea = document.getElementById(`answer${i}`);
+                if (textarea && textarea.value.trim()) {
+                    answers[i] = textarea.value;
+                    hasAnswers = true;
+                }
+            }
+            const answer2a = document.getElementById('answer2a').value;
+            const answer2b = document.getElementById('answer2b').value;
+            const answer2c = document.getElementById('answer2c').value;
+            if (answer2a) answers['2a'] = answer2a;
+            if (answer2b) answers['2b'] = answer2b;
+            if (answer2c) answers['2c'] = answer2c;
+            if (!hasAnswers) {
+                alert('❌ Please write at least one answer before saving.');
+                return;
+            }
+            let content = `SELENIUM AUTOMATION TEST - ALL ANSWERS\nTest Duration: 40 Minutes\n========================================\n\n`;
+            content += `CHALLENGE 1: Hidden Elements\n${answers[1] || '(No answer)'}\n========================================\n\nCHALLENGE 2: Element Locators\n2.a: ${answers['2a'] || '(No answer)'}\n2.b: ${answers['2b'] || '(No answer)'}\n2.c: ${answers['2c'] || '(No answer)'}\n========================================\n\n`;
+            for (let i = 3; i <= 11; i++) {
+                const titles = ['', '', '', 'Loading Spinners', 'Infinite Scroll', 'Dynamic IDs', 'Element Count', 'Attribute Change', 'Stale Elements', 'CSS Value Change', 'File Upload', 'File Download'];
+                content += `CHALLENGE ${i}: ${titles[i]}\n${answers[i] || '(No answer)'}\n========================================\n\n`;
+            }
+            content += `Submitted: ${new Date().toLocaleString()}`;
+            const element = document.createElement('a');
+            const file = new Blob([content], {type: 'text/plain'});
+            element.href = URL.createObjectURL(file);
+            element.download = `selenium_test_answers_${new Date().getTime()}.txt`;
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+            alert('✅ All answers saved! File downloaded.');
+        }
+
+        const solutions = {
+            1: {
+                title: "Challenge 1: Dropdown Pattern Library",
+                content: `
+                    <div class="solution-approach">
+                        <h3>✅ Solution Approaches</h3>
+                        <div class="code-section">Steps:
+1. Find dropdown trigger element
+2. Click to open dropdown menu
+3. Wait for menu options to appear
+4. Find the desired option by text
+5. Click the option to select
+6. Verify selection completed
+
+Locator Strategy:
+- Find trigger by class: .custom-dropdown
+- Find options by class: .dropdown-option
+- Filter by text content</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Alternative: Using Select Statement</h3>
+                        <div class="code-section">If using HTML Select:
+1. Import Select class
+2. Locate select element
+3. Use Select.select_by_value() or by visible text
+4. Get selected option
+5. Verify selection
+
+For Pattern Library Dropdowns:
+- Standard Select class won't work
+- Must interact like regular elements
+- Treat as button + list items</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>🎯 Key Points:</h3>
+                        <div class="key-points">
+                            <ul>
+                                <li>Pattern library dropdowns are custom elements (not HTML select)</li>
+                                <li>Click trigger to show/hide menu</li>
+                                <li>Menu items are separate elements (divs, spans, etc.)</li>
+                                <li>Use WebDriverWait for visibility_of_element_located()</li>
+                                <li>Standard Select class won't work - use click() instead</li>
+                                <li>Handle dropdown closing after selection</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            2: {
+                title: "Challenge 2: Element Locators - Multiple Strategies",
+                content: `
+                    <div class="solution-approach">
+                        <h3>✅ Solution 2.a - Locate by ID and CSS Class</h3>
+                        <div class="code-section">Methods:
+1. By ID: driver.find_element(By.ID, "userEmail")
+2. By CSS with class: driver.find_element(By.CSS_SELECTOR, ".form-input.email-field")
+3. By CSS combining ID+class: #userEmail.form-input
+4. Fill with: send_keys("test@example.com")
+5. Verify with: get_attribute("value")</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Solution 2.b - Locate by Name and XPath</h3>
+                        <div class="code-section">Methods:
+1. By NAME: driver.find_element(By.NAME, "username")
+2. By XPath basic: //input[@name='username']
+3. By XPath with AND: //input[@name='username' and @type='text']
+4. By XPath contains: //input[contains(@class, 'username-field')]
+5. By XPath starts-with: //input[starts-with(@name, 'user')]</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Solution 2.c - Locate by Link Text</h3>
+                        <div class="code-section">Methods:
+1. By LINK_TEXT (exact): driver.find_element(By.LINK_TEXT, "Forgot Password Link")
+2. By PARTIAL_LINK_TEXT: driver.find_element(By.PARTIAL_LINK_TEXT, "Password")
+3. By XPath text (exact): //a[text()='Forgot Password Link']
+4. By XPath contains text: //a[contains(text(), 'Password')]
+5. Click link: link_element.click()</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>📊 Locator Priority & Best Practices:</h3>
+                        <div class="key-points">
+                            <ul>
+                                <li><strong>1st choice:</strong> ID (fastest, most stable)</li>
+                                <li><strong>2nd choice:</strong> NAME (good for forms)</li>
+                                <li><strong>3rd choice:</strong> CSS Selector (good for classes)</li>
+                                <li><strong>4th choice:</strong> XPath (most flexible, slower)</li>
+                                <li><strong>For Links:</strong> LINK_TEXT or PARTIAL_LINK_TEXT</li>
+                                <li><strong>Avoid:</strong> nth-child(), brittle selectors</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            3: {
+                title: "Challenge 3: Loading Spinners",
+                content: `
+                    <div class="solution-approach">
+                        <h3>✅ Method 1: Wait for Spinner to Disappear</h3>
+                        <div class="code-section">Steps:
+1. Click button
+2. Wait for spinner invisibility
+3. Use: EC.invisibility_of_element_located((By.ID, "spinner1"))
+4. Timeout: WebDriverWait(driver, 10)
+5. Proceed after spinner disappears</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Method 2: Wait for Content to Appear</h3>
+                        <div class="code-section">Steps:
+1. Click button
+2. Wait for content visibility
+3. Use: EC.visibility_of_element_located((By.ID, "content1"))
+4. Or wait for specific text in content
+5. Verify content is displayed</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Method 3: Combined Wait (Best Practice)</h3>
+                        <div class="code-section">Steps:
+1. Click button
+2. Wait for BOTH conditions:
+   - Spinner is invisible
+   - Content is visible
+3. Use lambda: lambda d: (not spinner.is_displayed() and content.is_displayed())
+4. More reliable than checking individually
+5. Ensures clean state transition</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>🎯 Key Differences:</h3>
+                        <div class="key-points">
+                            <ul>
+                                <li><strong>invisibility_of_element_located():</strong> Element not displayed</li>
+                                <li><strong>visibility_of_element_located():</strong> Element is displayed</li>
+                                <li><strong>presence_of_element_located():</strong> Element exists in DOM (even if hidden)</li>
+                                <li>Combined approach ensures both spinner gone AND content visible</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            4: {
+                title: "Challenge 4: Infinite Scroll",
+                content: `
+                    <div class="solution-approach">
+                        <h3>✅ Scroll to Bottom Using JavaScript</h3>
+                        <div class="code-section">Steps:
+1. Find scroll container element
+2. Execute JavaScript to scroll to bottom
+3. Script: arguments[0].scrollTop = arguments[0].scrollHeight
+4. Wait for new items to load
+5. Verify item count increased</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Load Multiple Batches</h3>
+                        <div class="code-section">Steps:
+1. Get scroll container
+2. Loop for multiple scrolls:
+   - Execute scroll script
+   - Wait for items to load
+   - Sleep 1 second between scrolls
+   - Print item count per batch
+3. Verify total items match expected</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Verify Item Count with Custom Wait</h3>
+                        <div class="code-section">Steps:
+1. Create custom Expected Condition class
+2. Count elements: len(driver.find_elements(By.CLASS_NAME, "scroll-item"))
+3. Return True when count >= target
+4. Or use lambda: len(items) >= 15
+5. Wait with: WebDriverWait(driver, 10).until(CustomCondition)</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>🎯 Key Points:</h3>
+                        <div class="key-points">
+                            <ul>
+                                <li>Use <strong>execute_script()</strong> with scrollTop and scrollHeight</li>
+                                <li>For page-level scroll: use <strong>window.scrollY</strong></li>
+                                <li>Wait between scrolls to allow items to load</li>
+                                <li>Create custom conditions for element count</li>
+                                <li>Always check for dynamic content markers</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            5: {
+                title: "Challenge 5: Dynamic Element IDs",
+                content: `
+                    <div class="solution-approach">
+                        <h3>✅ Use Partial Attribute Matching</h3>
+                        <div class="code-section">Strategies:
+1. CSS starts-with: [id^='item-']
+2. CSS contains: [id*='item-']
+3. XPath starts-with: //*[starts-with(@id, 'item-')]
+4. XPath contains: //*[contains(@id, 'item-')]
+5. Combine with other attributes for more specific match</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Use Class or Other Stable Attributes</h3>
+                        <div class="code-section">Fallback strategies:
+1. Use class name: By.CLASS_NAME, "dynamic-element"
+2. Find by text: //div[contains(text(), 'My ID:')]
+3. Find via parent: parent.find_element(By.CLASS_NAME, "dynamic-element")
+4. Use data-testid: [data-testid='my-element']
+5. Combine multiple attributes for uniqueness</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Use Data Attributes</h3>
+                        <div class="code-section">Best Practice:
+1. Add data-testid to HTML for testing
+2. Locate with: By.CSS_SELECTOR, "[data-testid='element']"
+3. Or XPath: //*[@data-testid='element']
+4. Stable even if ID changes
+5. Recommended for test automation</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>🎯 Best Practices:</h3>
+                        <div class="key-points">
+                            <ul>
+                                <li><strong>Avoid:</strong> Direct ID selectors when ID is dynamic</li>
+                                <li><strong>Use:</strong> XPath with starts-with() or contains()</li>
+                                <li><strong>Better:</strong> Data-testid attributes (add in HTML for testing)</li>
+                                <li><strong>Best:</strong> Stable parent element + relative XPath</li>
+                                <li>Partial matching: ^= (starts), *= (contains), $= (ends)</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            6: {
+                title: "Challenge 6: Element Count",
+                content: `
+                    <div class="solution-approach">
+                        <h3>✅ Create Custom Expected Condition</h3>
+                        <div class="code-section">Steps:
+1. Define class with __init__ and __call__
+2. In __call__, find all elements
+3. Count: len(driver.find_elements(locator))
+4. Return True if count == target
+5. Use with: wait.until(CustomClass(locator, 15))</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Wait for Minimum Count</h3>
+                        <div class="code-section">Variation:
+1. Create class checking count >= target
+2. Useful when exact count unknown
+3. Example: Wait for at least 15 items
+4. Return True when len(elements) >= 15
+5. More flexible than exact count</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Using Lambda</h3>
+                        <div class="code-section">Quick approach:
+1. Wait for exact count: lambda d: len(d.find_elements(...)) == 15
+2. Wait for minimum: lambda d: len(d.find_elements(...)) >= 15
+3. Simpler but less reusable
+4. Good for one-off conditions
+5. Less code than full class definition</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>🎯 Key Points:</h3>
+                        <div class="key-points">
+                            <ul>
+                                <li>Standard waiters don't support element count directly</li>
+                                <li>Create custom Expected Conditions for count verification</li>
+                                <li>Use lambda for quick, one-off conditions</li>
+                                <li>Create class-based conditions for reusable logic</li>
+                                <li>Return True when condition met, False/None to retry</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            7: {
+                title: "Challenge 7: Attribute Change",
+                content: `
+                    <div class="solution-approach">
+                        <h3>✅ Create Custom Wait for Attribute</h3>
+                        <div class="code-section">Steps:
+1. Define class to check attribute
+2. Use get_attribute(name) to retrieve
+3. Return True when attribute is None or changed
+4. Example: wait for disabled=None (enabled)
+5. Use: wait.until(AttributeRemoved(locator, "disabled"))</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Wait for Attribute Value</h3>
+                        <div class="code-section">Variation:
+1. Check attribute equals specific value
+2. Example: data-status == "ready"
+3. Get current: element.get_attribute("data-status")
+4. Compare with expected value
+5. Return True when matches</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Using Lambda Approach</h3>
+                        <div class="code-section">Quick method:
+1. Wait for attribute removal: lambda d: d.find_element(...).get_attribute("disabled") is None
+2. Wait for value: lambda d: d.find_element(...).get_attribute("data-status") == "complete"
+3. Check is_enabled(): lambda d: d.find_element(...).is_enabled()
+4. Simpler than class-based for quick checks</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>🎯 Key Points:</h3>
+                        <div class="key-points">
+                            <ul>
+                                <li>Use <strong>get_attribute()</strong> to retrieve any HTML attribute</li>
+                                <li><strong>None</strong> = attribute doesn't exist (e.g., disabled removed)</li>
+                                <li><strong>Empty string</strong> = attribute exists but no value</li>
+                                <li>For buttons: use <strong>is_enabled()</strong> instead of checking disabled</li>
+                                <li>Create reusable Expected Condition classes</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            8: {
+                title: "Challenge 8: Stale Element",
+                content: `
+                    <div class="solution-approach">
+                        <h3>✅ Method 1: Re-locate Element Before Each Interaction</h3>
+                        <div class="code-section">Best Practice:
+1. Define function that re-locates element
+2. Find element fresh before each action
+3. Click: driver.find_element(locator).click()
+4. Fill: driver.find_element(locator).send_keys(data)
+5. Never store element reference across actions</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Method 2: Retry with Exception Handling</h3>
+                        <div class="code-section">Robust approach:
+1. Implement try-except loop (3 retries)
+2. Catch StaleElementReferenceException
+3. Re-locate element on catch
+4. Wait 0.5 seconds before retry
+5. Raise if all retries exhausted</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Method 3: Store Locator, Not Element Reference</h3>
+                        <div class="code-section">Recommended:
+1. Store locator tuple: (By.ID, "element")
+2. NOT element reference
+3. Later: driver.find_element(*locator).click()
+4. Always gets fresh element from DOM
+5. Prevents stale references</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>🎯 Best Practices:</h3>
+                        <div class="key-points">
+                            <ul>
+                                <li><strong>NEVER</strong> store element references across interactions</li>
+                                <li><strong>ALWAYS</strong> re-locate elements before use</li>
+                                <li>Store LOCATOR (tuple), not element reference</li>
+                                <li>Use try-except with StaleElementReferenceException for robustness</li>
+                                <li>Implement retry logic in critical sections</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            9: {
+                title: "Challenge 9: CSS Value Change",
+                content: `
+                    <div class="solution-approach">
+                        <h3>✅ Custom Expected Condition for CSS Value</h3>
+                        <div class="code-section">Steps:
+1. Create class to check CSS property
+2. Use value_of_css_property(property_name)
+3. Normalize color values before comparison
+4. Return True when value matches
+5. Usage: wait.until(CSSValueIs(locator, "background-color", "rgb(200, 100, 100)"))</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Using JavaScript Approach</h3>
+                        <div class="code-section">Alternative:
+1. Use execute_script with getComputedStyle
+2. Script: window.getComputedStyle(element).propertyName
+3. Returns computed CSS value
+4. Can be more reliable than value_of_css_property()
+5. Example: wait until execute_script returns expected value</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Waiting for CSS Class Changes</h3>
+                        <div class="code-section">Better approach:
+1. Instead of CSS value, check class
+2. More stable and reliable
+3. Example: wait for "loading-complete" class
+4. Use get_attribute("class") to check
+5. Easier to maintain than CSS value matching</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>🎯 Key Points:</h3>
+                        <div class="key-points">
+                            <ul>
+                                <li>Use <strong>value_of_css_property()</strong> to get computed CSS</li>
+                                <li>Returns computed value (e.g., rgb format), not what's in CSS file</li>
+                                <li>Color formats vary: normalize before comparison (rgb, rgba, hex)</li>
+                                <li>Works with any CSS property: opacity, width, display, etc.</li>
+                                <li>Consider using CSS class changes instead (more stable)</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            10: {
+                title: "Challenge 10: File Upload",
+                content: `
+                    <div class="solution-approach">
+                        <h3>✅ Basic File Upload</h3>
+                        <div class="code-section">Steps:
+1. Locate file input element
+2. Get absolute file path using os.path.abspath()
+3. Use send_keys(file_path) directly
+4. Bypasses browser file picker dialog
+5. Automatically selects file</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Verify File Was Selected</h3>
+                        <div class="code-section">Verification:
+1. Get file input value: get_attribute("value")
+2. Check if filename in value
+3. Note: Shows "C:\fakepath\filename" (security)
+4. Extract filename: os.path.basename(value)
+5. Assert filename matches upload</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Upload with Verification</h3>
+                        <div class="code-section">Complete flow:
+1. Verify file exists before upload
+2. Send file path to input
+3. Click submit button
+4. Wait for upload success confirmation
+5. Verify file appears on page/server</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>🎯 Key Points:</h3>
+                        <div class="key-points">
+                            <ul>
+                                <li><strong>send_keys()</strong> directly on file input bypasses dialog</li>
+                                <li>Use absolute path: os.path.abspath(relative_path)</li>
+                                <li>File must exist where tests run (not on browser side)</li>
+                                <li>Value attribute shows "C:\\fakepath\\filename" (security feature)</li>
+                                <li>Always verify file exists before upload attempt</li>
+                                <li>Wait for success confirmation after upload</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            11: {
+                title: "Challenge 11: File Download",
+                content: `
+                    <div class="solution-approach">
+                        <h3>✅ Method 1: Configure Chrome Options</h3>
+                        <div class="code-section">Recommended:
+1. Set download directory in prefs
+2. Disable download prompts
+3. Disable safe browsing warnings
+4. Code: prefs = {"download.default_directory": download_dir}
+5. Add to driver options before creation</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Method 2: Verify Download Completion</h3>
+                        <div class="code-section">Verification:
+1. Wait for file to appear in download folder
+2. Check if file still downloading (.crdownload)
+3. Loop with timeout: check every 0.5 seconds
+4. Max timeout: 10 seconds
+5. Return file path when download complete</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Method 3: Verify File Content</h3>
+                        <div class="code-section">Content Check:
+1. Verify file exists
+2. Check file size > 0 (not empty)
+3. Read file and check content
+4. Verify expected text present
+5. Cleanup downloaded file after test</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>✅ Method 4: Firefox Configuration</h3>
+                        <div class="code-section">Firefox:
+1. Set folderList to 2 (custom folder)
+2. Set download directory path
+3. Add MIME types to neverAsk.saveToDisk
+4. Example: application/pdf, text/csv, text/plain
+5. Browser won't prompt for these types</div>
+                    </div>
+                    <div class="solution-approach">
+                        <h3>🎯 Key Points:</h3>
+                        <div class="key-points">
+                            <ul>
+                                <li><strong>Chrome:</strong> Use prefs to set download directory</li>
+                                <li><strong>Firefox:</strong> Use set_preference() with MIME types</li>
+                                <li><strong>Disable Prompts:</strong> Set download.prompt_for_download = False</li>
+                                <li><strong>Check Status:</strong> Chrome/Firefox add .crdownload while downloading</li>
+                                <li><strong>Verify:</strong> Check file exists, is not empty, has expected content</li>
+                                <li><strong>Cleanup:</strong> Clear download folder before tests for consistency</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        function showSolution(challengeNum, title) {
+            currentChallengeNum = challengeNum;
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('errorMsg').textContent = '';
+            document.getElementById('passwordModal').classList.add('active');
+        }
+
+        function submitPassword() {
+            const password = document.getElementById('passwordInput').value;
+            if (password === 'selenium123') {
+                document.getElementById('passwordModal').classList.remove('active');
+                const solution = solutions[currentChallengeNum];
+                document.getElementById('solutionTitle').textContent = `✅ ${solution.title}`;
+                document.getElementById('solutionContent').innerHTML = solution.content;
+                document.getElementById('solutionModal').classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.getElementById('errorMsg').textContent = '❌ Incorrect password.';
+            }
+        }
+
+        function closePasswordModal() {
+            document.getElementById('passwordModal').classList.remove('active');
+        }
+
+        function closeSolution() {
+            document.getElementById('solutionModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeSolutionIfBackground(event) {
+            if (event.target.id === 'solutionModal') closeSolution();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (document.getElementById('passwordModal').classList.contains('active')) closePasswordModal();
+                else if (document.getElementById('solutionModal').classList.contains('active')) closeSolution();
+            }
+        });
+
+        // Dropdown functions
+        function toggleDropdown(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('dropdownMenu');
+            const isOpen = menu.style.display === 'block';
+            menu.style.display = isOpen ? 'none' : 'block';
+            console.log('Dropdown toggled:', !isOpen);
+        }
+
+        function selectOption(option, event) {
+            event.stopPropagation();
+            document.getElementById('selectedValue').textContent = option;
+            document.getElementById('displaySelected').textContent = option;
+            document.getElementById('dropdownMenu').style.display = 'none';
+            console.log('Selected:', option);
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.custom-dropdown-container');
+            const menu = document.getElementById('dropdownMenu');
+            
+            if (dropdown && !dropdown.contains(event.target)) {
+                if (menu && menu.style.display === 'block') {
+                    menu.style.display = 'none';
+                }
+            }
+        });
+
+        // Challenge functions
+        function simulateLoad(button) {
+            const spinner = document.getElementById('spinner1');
+            const content = document.getElementById('content1');
+            spinner.classList.remove('hidden');
+            content.classList.remove('loaded');
+            setTimeout(() => {
+                spinner.classList.add('hidden');
+                content.classList.add('loaded');
+            }, 120000);
+        }
+
+        function handleScroll(event) {
+            const container = event.target;
+            if (container.scrollTop + container.clientHeight >= container.scrollHeight - 50) {
+                for (let i = 0; i < 3; i++) {
+                    const item = document.createElement('div');
+                    item.className = 'scroll-item';
+                    item.textContent = `Item ${container.querySelectorAll('.scroll-item').length + 1}`;
+                    container.appendChild(item);
+                }
+            }
+        }
+
+        function regenerateDynamicId() {
+            const element = document.querySelector('.dynamic-element');
+            const newId = 'item-' + Math.floor(Math.random() * 90000 + 10000);
+            element.id = newId;
+            document.getElementById('idDisplay').textContent = newId;
+        }
+
+        function loadMoreItems(event) {
+            const itemList = document.getElementById('itemList');
+            const currentCount = itemList.querySelectorAll('.list-item').length;
+            if (currentCount < 15) {
+                for (let i = 0; i < 5 && currentCount + i < 15; i++) {
+                    const item = document.createElement('div');
+                    item.className = 'list-item';
+                    item.textContent = `Item ${currentCount + i + 1}`;
+                    itemList.appendChild(item);
+                }
+            }
+        }
+
+        function validateForm() {
+            const input = document.getElementById('formInput');
+            const button = document.getElementById('submitBtn');
+            if (input.value.trim().length > 0) button.removeAttribute('disabled');
+            else button.setAttribute('disabled', 'disabled');
+        }
+
+        function regenerateDOMElements() {
+            const container = document.getElementById('staleContainer');
+            container.innerHTML = container.innerHTML;
+        }
+
+        function changeColor(event) {
+            const box = document.getElementById('colorBox');
+            const status = document.getElementById('colorStatus');
+            const colors = [
+                { rgb: 'rgb(100, 200, 100)', name: 'Green' },
+                { rgb: 'rgb(200, 100, 100)', name: 'Red' },
+                { rgb: 'rgb(100, 150, 200)', name: 'Blue' },
+                { rgb: 'rgb(200, 200, 100)', name: 'Yellow' }
+            ];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            box.style.background = randomColor.rgb;
+            status.textContent = `Current: ${randomColor.name}`;
+        }
+
+        function handleFileUpload() {
+            const fileInput = document.getElementById('fileUpload');
+            const result = document.getElementById('uploadResult');
+            const currentFile = document.getElementById('currentFile');
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                currentFile.textContent = file.name;
+                result.innerHTML = `<div style="background: #c8e6c9; padding: 10px; border-radius: 3px; color: #2e7d32;">✅ File: ${file.name} (${(file.size / 1024).toFixed(2)} KB)</div>`;
+            } else {
+                result.innerHTML = '<div style="background: #ffcccc; padding: 10px; border-radius: 3px; color: #c62828;">❌ No file selected</div>';
+            }
+        }
+
+        function initiateDownload() {
+            const result = document.getElementById('downloadResult');
+            result.innerHTML = '<div style="background: #bbdefb; padding: 10px; border-radius: 3px; color: #1565c0;">📥 Downloading report.txt...</div>';
+            const element = document.createElement('a');
+            const file = new Blob(['Sample Report\nGenerated: ' + new Date()], {type: 'text/plain'});
+            element.href = URL.createObjectURL(file);
+            element.download = 'report.txt';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        function initiateCSVDownload() {
+            const result = document.getElementById('downloadResult');
+            result.innerHTML = '<div style="background: #bbdefb; padding: 10px; border-radius: 3px; color: #1565c0;">📥 Downloading data.csv...</div>';
+            const element = document.createElement('a');
+            const file = new Blob(['Name,Email\nJohn,john@test.com'], {type: 'text/csv'});
+            element.href = URL.createObjectURL(file);
+            element.download = 'data.csv';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+    </script>
+</body>
+</html>
